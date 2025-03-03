@@ -6,14 +6,14 @@ if (read_only_vars.counter == 1)
           
     public_vars = init_particle_filter(read_only_vars, public_vars);
     public_vars = init_kalman_filter(read_only_vars, public_vars);
+    
+    public_vars.path = [2,2;1,4;2,6;1,8;2,9;6,8];
+    public_vars.path_index = 1;
+    public_vars.last_path_wp_timestamp = 0;
+    public_vars.v_target = 2.5;
 
-    public_vars.lidar_history = [];
-    public_vars.gnss_history = [];
-
+    % public_vars.position_history = []; 
 end
-
-public_vars.lidar_history = [public_vars.lidar_history, read_only_vars.lidar_distances'];
-public_vars.gnss_history = [public_vars.gnss_history, read_only_vars.gnss_position'];
 
 % 9. Update particle filter
 public_vars.particles = update_particle_filter(read_only_vars, public_vars);

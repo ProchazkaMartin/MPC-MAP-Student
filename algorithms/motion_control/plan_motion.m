@@ -2,24 +2,31 @@ function [public_vars] = plan_motion(read_only_vars, public_vars)
 %PLAN_MOTION Summary of this function goes here
 
 % I. Pick navigation target
+R = read_only_vars.mocap_pose(1:2);
+phi = read_only_vars.mocap_pose(3);
+epsilon = 0.5;
+P = R + epsilon*[cos(phi), sin(phi)];
 
-target = get_target(public_vars.estimated_pose, public_vars.path);
+% public_vars.position_history = [public_vars.position_history ; R];
+
+[public_vars, target, v_G] = get_target(read_only_vars, public_vars);
+delta_GP = target - P;
+
+
 
 
 % II. Compute motion vector
 
-if read_only_vars.counter < 140
-    public_vars.motion_vector = [0.49, 0.5];
-elseif read_only_vars.counter < 190
-    public_vars.motion_vector = [0.4, 0.5];
-elseif read_only_vars.counter < 300
-    public_vars.motion_vector = [0.51, 0.5];
-elseif read_only_vars.counter < 345
-    public_vars.motion_vector = [0.5, 0.4];
-else
-    public_vars.motion_vector = [0.5, 0.5];
-end
+dP = public_vars.v_target/epsilon * delta_GP + v_G;
 
-read_only_vars.counter
+v = sum(dP .* [cos(phi), sin(phi)]);
+omega = sum(dP .* [-sin(phi), cos(phi)]) / epsilon;
+d = 0.2;
+
+v_r = v + omega*d/2;
+v_l = v - omega*d/2;
+
+% read_only_vars.counter
+public_vars.motion_vector = [v_r, v_l];
 
 end
