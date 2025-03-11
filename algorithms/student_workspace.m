@@ -10,6 +10,12 @@ if (read_only_vars.counter == 1)
     public_vars.path_index = 1;
     public_vars.v_target = 1 *read_only_vars.agent_drive.max_vel;
 
+    mult = read_only_vars.map.limits(3:4) - read_only_vars.map.limits(1:2);
+    add = read_only_vars.map.limits(1:2);
+
+    public_vars.particles = rand(read_only_vars.max_particles, 3) .* [mult, 2*pi] + [add,0];
+
+
     s1_x = [2:0.1:6];
     s1_y = sin(s1_x*4)+8.5;
     public_vars.path = [s1_x', s1_y'];
