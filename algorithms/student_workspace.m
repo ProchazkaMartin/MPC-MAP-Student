@@ -16,17 +16,19 @@ if (read_only_vars.counter == 1)
     public_vars.particles = rand(read_only_vars.max_particles, 3) .* [mult, 2*pi] + [add,0];
 
 
-    s1_x = [2:0.1:6];
-    s1_y = sin(s1_x*4)+8.5;
-    public_vars.path = [s1_x', s1_y'];
+    % s1_x = [2:0.1:6];
+    % s1_y = sin(s1_x*4)+8.5;
+    % public_vars.path = [s1_x', s1_y'];
+    % 
+    % s2_raw = [6,7;4,6; 6,4; 4,2; 6,1; 8,0.5];
+    % s2_y = [7:-0.1:0.5];
+    % s2_x = spline(s2_raw(:,2),s2_raw(:,1),s2_y);
+    % public_vars.path = [public_vars.path; s2_x', s2_y'];
+    % 
+    % s3 = [9,2; 8,4; 9,6; 9,9];
+    % public_vars.path = [public_vars.path; s3];
 
-    s2_raw = [6,7;4,6; 6,4; 4,2; 6,1; 8,0.5];
-    s2_y = [7:-0.1:0.5];
-    s2_x = spline(s2_raw(:,2),s2_raw(:,1),s2_y);
-    public_vars.path = [public_vars.path; s2_x', s2_y'];
-
-    s3 = [9,2; 8,4; 9,6; 9,9];
-    public_vars.path = [public_vars.path; s3];
+    public_vars.path = [2,2;5,5;7,5;7,1;9,1;9,9;7,9;4,6;1,5;1,9;3,9];
 
 end
 
@@ -37,8 +39,8 @@ public_vars.particles = update_particle_filter(read_only_vars, public_vars);
 [public_vars.mu, public_vars.sigma] = update_kalman_filter(read_only_vars, public_vars);
 
 % 11. Estimate current robot position
-% public_vars.estimated_pose = estimate_pose(public_vars); % (x,y,theta)
-public_vars.estimated_pose = read_only_vars.mocap_pose;
+public_vars.estimated_pose = estimate_pose(public_vars); % (x,y,theta)
+% public_vars.estimated_pose = read_only_vars.mocap_pose;
 
 % 12. Path planning
 public_vars.path = plan_path(read_only_vars, public_vars);

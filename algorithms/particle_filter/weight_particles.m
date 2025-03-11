@@ -6,11 +6,8 @@ function [weights] = weight_particles(particle_measurements, lidar_distances)
 
 weights = 1 ./ sqrt( sum((particle_measurements - lidar_distances).^2, 2) );
 weights(isnan(weights)) = 0.000001;
-sum(weights)
 
 weights = weights / sum(weights);
-s = sort(weights);
-s(end)
 
 end
 

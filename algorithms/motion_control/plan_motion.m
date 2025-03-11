@@ -1,10 +1,13 @@
 function [public_vars] = plan_motion(read_only_vars, public_vars)
 %PLAN_MOTION Summary of this function goes here
 
+pose = read_only_vars.mocap_pose;
+% pose = public_vars.estimated_pose;
+
 % I. Pick navigation target
-R = public_vars.estimated_pose(1:2);
-phi = public_vars.estimated_pose(3);
-epsilon = 0.1;
+R = pose(1:2);
+phi = pose(3);
+epsilon = 0.2;
 P = R + epsilon*[cos(phi), sin(phi)];
 
 [public_vars, target, v_G] = get_target(public_vars, P);

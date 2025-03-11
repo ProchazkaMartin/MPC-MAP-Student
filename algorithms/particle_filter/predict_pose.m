@@ -10,7 +10,7 @@ omega = (motion_vector_noisy(1) - motion_vector_noisy(2)) / read_only_vars.agent
 
 new_pose = old_pose + [cos(phi)*v, sin(phi)*v, omega] * read_only_vars.sampling_period;
 
-new_pose = new_pose + [( (randn(1,2))/50 ), randn()/10];
+new_pose = new_pose + [( (randn(1,2))/50 ), 0];
 
 end
 
