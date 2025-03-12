@@ -1,8 +1,9 @@
 function [new_particles] = resample_particles(particles, weights, read_only_vars)
 %RESAMPLE_PARTICLES Summary of this function goes here
 
-N = 200;
-N_rng = 50;
+
+N = 500;
+N_rng = 100;
 w_index = 1;
 w_cumulative = weights(1);
 u_cumulative = rand()/N;

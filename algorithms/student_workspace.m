@@ -40,6 +40,9 @@ public_vars.particles = update_particle_filter(read_only_vars, public_vars);
 
 % 11. Estimate current robot position
 public_vars.estimated_pose = estimate_pose(public_vars); % (x,y,theta)
+if read_only_vars.counter < 50
+    public_vars.estimated_pose = nan(1,3);
+end
 % public_vars.estimated_pose = read_only_vars.mocap_pose;
 
 % 12. Path planning

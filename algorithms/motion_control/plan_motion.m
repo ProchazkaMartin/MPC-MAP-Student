@@ -30,6 +30,9 @@ v_r = v + omega*d/2;
 v_l = v - omega*d/2;
 
 public_vars.motion_vector = [v_r, v_l];
-% public_vars.motion_vector = [0.01, 0];
+if read_only_vars.counter < 50
+    public_vars.motion_vector = [0.2, -0.2];
+end
+% public_vars.motion_vector = [0.1, 0];
 
 end
