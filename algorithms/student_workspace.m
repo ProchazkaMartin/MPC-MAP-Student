@@ -6,6 +6,7 @@ if (read_only_vars.counter == 1)
           
     public_vars = init_particle_filter(read_only_vars, public_vars);
     % public_vars = init_kalman_filter(read_only_vars, public_vars);
+    public_vars = init_pathplanning(read_only_vars, public_vars);
     
     public_vars.path_index = 1;
     public_vars.v_target = 1 *read_only_vars.agent_drive.max_vel;
@@ -28,7 +29,7 @@ if (read_only_vars.counter == 1)
     % s3 = [9,2; 8,4; 9,6; 9,9];
     % public_vars.path = [public_vars.path; s3];
 
-    public_vars.path = [2,2; 5,8; 10,8; 15,6; 16,2];
+    % public_vars.path = [2,2; 5,8; 10,8; 15,6; 16,2];
 
 end
 
@@ -50,11 +51,13 @@ end
 % public_vars.estimated_pose = read_only_vars.mocap_pose;
 
 % 12. Path planning
-public_vars.path = plan_path(read_only_vars, public_vars);
+% public_vars.path = plan_path(read_only_vars, public_vars);
 
 % 13. Plan next motion command
 if read_only_vars.counter < 50
     public_vars.motion_vector = [0, 0];
+elseif read_only_vars.counter == 50
+    public_vars.path = plan_path(read_only_vars, public_vars);
 else
     public_vars = plan_motion(read_only_vars, public_vars);
 end
