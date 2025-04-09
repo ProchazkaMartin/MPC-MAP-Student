@@ -46,12 +46,9 @@ if public_vars.use_pf
 else
     % ekf health
     health = trace(public_vars.sigma);
-    delta = max([health-0.5, 0]);
+    delta = max([health-0.045, 0]);
     speed_mult = 1/(1+delta);
 end
-
-
-
 
 pose = public_vars.estimated_pose;
 
@@ -63,6 +60,11 @@ P = R + epsilon*[cos(phi), sin(phi)];
 
 [public_vars, target, v_G] = get_target(public_vars, P);
 delta_GP = target - P;
+
+% replan if too far from path
+if norm(delta_GP) > 1
+    public_vars.path_planning_reqest = 1;
+end
 
 % II. Compute motion vector
 
