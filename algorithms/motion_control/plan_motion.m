@@ -1,7 +1,44 @@
 function [public_vars] = plan_motion(read_only_vars, public_vars)
 %PLAN_MOTION Summary of this function goes here
 
-% pose = read_only_vars.mocap_pose;
+d = read_only_vars.agent_drive.interwheel_dist;
+
+if public_vars.init_active == 1
+    public_vars.motion_vector = [0.13, -0.13];
+    return;
+end
+
+min_distance = 0.4;
+if min(read_only_vars.lidar_distances) < min_distance
+    public_vars.path_planning_reqest = 1;
+    v = 0.1;
+    if read_only_vars.lidar_distances(1) < min_distance
+        v = -0.1;
+    end
+
+    omega = 0.1;
+    if read_only_vars.lidar_distances(2) < read_only_vars.lidar_distances(8)
+        omega = -0.1;
+    end
+
+    if any(read_only_vars.lidar_distances([2,3]) < min_distance)
+        omega = -0.2;
+    elseif any(read_only_vars.lidar_distances([7,8]) < min_distance)
+        omega = 0.2;
+    end
+
+    v_r = v + omega*d/2;
+    v_l = v - omega*d/2;
+    
+    public_vars.motion_vector = [v_r, v_l];
+    return
+end
+
+if isempty(public_vars.path)
+    public_vars.motion_vector = [0, 0];
+    return;
+end
+
 pose = public_vars.estimated_pose;
 
 % I. Pick navigation target
@@ -24,7 +61,6 @@ dP = dP / 2;
 
 v = sum(dP .* [cos(phi), sin(phi)]);
 omega = sum(dP .* [-sin(phi), cos(phi)]) / epsilon;
-d = read_only_vars.agent_drive.interwheel_dist;
 
 v_r = v + omega*d/2;
 v_l = v - omega*d/2;

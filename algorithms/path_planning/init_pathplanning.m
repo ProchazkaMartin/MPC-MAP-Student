@@ -71,12 +71,10 @@ function [public_vars] = init_pathplanning(read_only_vars, public_vars)
                 continue;
             end
 
-            if map_expanded(new_row, new_col) == 1
-                map_visited(new_row, new_col) = true;
-                continue;
-            end
-
             new_distance = min_distance + costs(i);
+            if map_expanded(new_row, new_col) == 1
+                new_distance = new_distance + 1e8;
+            end
             if new_distance < map_distance(new_row, new_col)
                 map_distance(new_row, new_col) = new_distance;
                 public_vars.map_direction(new_row, new_col) = i;

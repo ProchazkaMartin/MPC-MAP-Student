@@ -7,14 +7,13 @@ wp_distance = vecnorm(public_vars.path(public_vars.path_index:end,:) - P,2,2);
 
 public_vars.path_index = public_vars.path_index + index_offset - 1;
 
-if public_vars.path_index == length(public_vars.path)
+if public_vars.path_index+1 >= size(public_vars.path,1)
     target = public_vars.path(end,:);
     v_G = [0,0];
     return
 end
 
 offset_vector = P - public_vars.path(public_vars.path_index,:);
-
 to_next = public_vars.path(public_vars.path_index+1,:) - public_vars.path(public_vars.path_index,:);
 to_next_scale = dot(offset_vector,to_next)/dot(to_next,to_next);
 
