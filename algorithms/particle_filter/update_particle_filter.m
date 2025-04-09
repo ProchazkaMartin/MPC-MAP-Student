@@ -15,10 +15,10 @@ end
 measurements = zeros(size(particles,1), length(read_only_vars.lidar_config));
 for i=1:size(particles, 1)
     meas = compute_lidar_measurement(read_only_vars.map, particles(i,:), read_only_vars.lidar_config);
-    offset = offset_rotation(meas, read_only_vars.lidar_distances);
-    meas = circshift(meas, offset);
-    deltaPhi = -offset / length(read_only_vars.lidar_distances) * 2 * pi;
-    particles(i,3) = mod(particles(i,3) + deltaPhi, 2*pi);
+    % offset = offset_rotation(meas, read_only_vars.lidar_distances);
+    % meas = circshift(meas, offset);
+    % deltaPhi = -offset / length(read_only_vars.lidar_distances) * 2 * pi;
+    % particles(i,3) = mod(particles(i,3) + deltaPhi, 2*pi);
     measurements(i,:) = meas;
 end
 weights = weight_particles(measurements, read_only_vars.lidar_distances);

@@ -39,6 +39,20 @@ if isempty(public_vars.path)
     return;
 end
 
+% slowdowns
+speed_mult = 1;
+if public_vars.use_pf
+    speed_mult = 0.75;
+else
+    % ekf health
+    health = trace(public_vars.sigma);
+    delta = max([health-0.5, 0]);
+    speed_mult = 1/(1+delta);
+end
+
+
+
+
 pose = public_vars.estimated_pose;
 
 % I. Pick navigation target
@@ -57,7 +71,7 @@ dP = public_vars.v_target/epsilon * delta_GP + v_G;
 if norm(dP) > read_only_vars.agent_drive.max_vel
     dP = dP/norm(dP)*read_only_vars.agent_drive.max_vel;
 end
-dP = dP / 2;
+dP = dP * speed_mult;
 
 v = sum(dP .* [cos(phi), sin(phi)]);
 omega = sum(dP .* [-sin(phi), cos(phi)]) / epsilon;

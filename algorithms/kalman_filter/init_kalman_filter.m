@@ -9,7 +9,7 @@ if public_vars.last_use_pf ~= public_vars.use_pf && public_vars.init_active == 0
 end
 
 public_vars.kf.C = [1, 0, 0; 0, 1, 0];
-public_vars.kf.R = [0.00005, 0, 0; 0, 0.00005, 0; 0, 0, 0.00005];
+public_vars.kf.R = [0.00001, 0, 0; 0, 0.00001, 0; 0, 0, 0.001];
 public_vars.kf.Q = [0.25, 0; 0, 0.25];
 
 public_vars.mu = [mean(read_only_vars.gnss_history), 0];
